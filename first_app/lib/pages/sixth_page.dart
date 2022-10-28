@@ -41,7 +41,7 @@ class _SixthPageState extends State<SixthPage> {
             onChanged: (value) {
               setState(() {
                 _updateTodo(todos[index].id, value!);
-                todos[index].completed = value!;
+                todos[index].completed = value;
               });
             },
             value: todos[index].completed,
