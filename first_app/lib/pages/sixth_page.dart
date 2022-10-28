@@ -85,7 +85,7 @@ class HttpService {
         "completed" : completed,
       }));
     if (response.statusCode == 200) {
-      print("OKkkkkk");
+      print("OKkkkk");
       return("OK");
     } else{
       throw Exception('Failed upload todos');
