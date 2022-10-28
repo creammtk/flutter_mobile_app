@@ -1,0 +1,8 @@
+version: "Apple Swift version 5.7 (swiftlang-5.7.0.127.4 clang-1400.0.29.50)"
+options: "1cd425c50917e3a96d1b11e257b00ba716c8bddff26d82693f2ca9cd09da2c49"
+build_start_time: [1665491862, 181189060]
+build_end_time: [1665491862, 203052997]
+inputs:
+  "/Users/cream/DevOps/workspace/first_app/macos/Flutter/GeneratedPluginRegistrant.swift": !private [1665491848, 177143573]
+  "/Users/cream/DevOps/workspace/first_app/macos/Runner/AppDelegate.swift": !private [1665490296, 793295621]
+  "/Users/cream/DevOps/workspace/first_app/macos/Runner/MainFlutterWindow.swift": !private [1665490296, 794798374]
