@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ThirdPage extends StatelessWidget{
+class ThirdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +14,6 @@ class ThirdPage extends StatelessWidget{
       body: MyForm(),
     );
   }
-  
 }
 
 class MyForm extends StatefulWidget {
@@ -23,13 +23,15 @@ class MyForm extends StatefulWidget {
 
 class _MyFormState extends State<MyForm> {
   final _formKey = GlobalKey<FormState>();
-  bool _hidePassword= true;
+  bool _hidePassword = true;
   late String _name;
   late int _age;
   late String _password;
   late String _comfirmpassword;
   var _pass;
   RegExp pass_valid = RegExp(r'(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
+
+  String _message = "";
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class _MyFormState extends State<MyForm> {
               ),
               validator: (value) {
                 _pass = value;
-                if (value == null || value.isEmpty){
+                if (value == null || value.isEmpty) {
                   return 'Please enter your name';
                 }
 
@@ -59,9 +61,8 @@ class _MyFormState extends State<MyForm> {
 
                 return null;
               },
-              onSaved: (newValue){
+              onSaved: (newValue) {
                 _name = newValue!;
-
               },
             ),
           ),
@@ -75,8 +76,8 @@ class _MyFormState extends State<MyForm> {
                 hintText: 'Enter your age',
                 icon: Icon(Icons.numbers),
               ),
-              validator:(value) {
-                if(value == null || value.isEmpty) {
+              validator: (value) {
+                if (value == null || value.isEmpty) {
                   return 'Please enter your age';
                 }
 
@@ -85,7 +86,6 @@ class _MyFormState extends State<MyForm> {
                 } catch (ex) {
                   return 'Please enter number only';
                 }
-
               },
               onSaved: (newValue) {
                 _age = int.parse(newValue!);
@@ -98,124 +98,184 @@ class _MyFormState extends State<MyForm> {
             child: TextFormField(
               initialValue: context.read<LoginProfileModel>().password,
               obscureText: _hidePassword,
-              validator:(value) {
+              validator: (value) {
                 _pass = value;
-                if(value == null || value.isEmpty) {
+                if (value == null || value.isEmpty) {
                   return 'Please return your password';
-                }
-                else if(value.length <8){
+                } else if (value.length < 8) {
                   return 'Password must be at least 8 characters';
-                }
-                else if(value.length >16){
+                } else if (value.length > 16) {
                   return 'Password must be at maximum 16 characters';
-                }
-                else if (pass_valid.hasMatch(value) == false) {
+                } else if (pass_valid.hasMatch(value) == false) {
                   return 'Password must contain both Upper/Lower and number';
                 }
-                
               },
               onSaved: (newValue) {
                 _password = newValue!;
               },
-              decoration:InputDecoration(
-                  border: const OutlineInputBorder(),
-                  hintText: 'Enter your password',
-                  icon: const Icon(Icons.remove_red_eye),
-                  suffixIcon: InkWell(
-                    child: const Icon(Icons.remove_red_eye),
-                    onTap: (){
-                      setState(() {
-                        _hidePassword = false;
-                      });
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: 'Enter your password',
+                icon: const Icon(Icons.remove_red_eye),
+                suffixIcon: InkWell(
+                  child: const Icon(Icons.remove_red_eye),
+                  onTap: () {
+                    setState(() {
+                      _hidePassword = false;
+                    });
 
-                      Timer(
-                        const Duration(seconds: 5),
-                        () {
-                          setState(() {
-                            _hidePassword = true;
-                          });
-                        },
-                      );
-                    },
-                    ),
-                  ),
+                    Timer(
+                      const Duration(seconds: 5),
+                      () {
+                        setState(() {
+                          _hidePassword = true;
+                        });
+                      },
+                    );
+                  },
                 ),
+              ),
             ),
-      
-          Divider(),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              obscureText: _hidePassword,
-              validator:(value) {
-                if(value == null || value.isEmpty) {
-                  return 'Please return your password';
-                }
-                else if (value!= _pass){
-                  return 'Password not match';
-                }
-              },
-              onSaved: (newValue) {
-                _comfirmpassword = newValue!;
-              },
-              decoration:InputDecoration(
-                  border: const OutlineInputBorder(),
-                  hintText: 'Confirm password',
-                  icon: const Icon(Icons.remove_red_eye),
-                  suffixIcon: InkWell(
-                    child: const Icon(Icons.remove_red_eye),
-                    onTap: (){
-                      setState(() {
-                        _hidePassword = false;
-                      });
+            child: Text('Message : $_message'),
+          ),
+          Divider(),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: TextFormField(
+          //     obscureText: _hidePassword,
+          //     validator: (value) {
+          //       if (value == null || value.isEmpty) {
+          //         return 'Please return your password';
+          //       } else if (value != _pass) {
+          //         return 'Password not match';
+          //       }
+          //     },
+          //     onSaved: (newValue) {
+          //       _comfirmpassword = newValue!;
+          //     },
+          //     decoration: InputDecoration(
+          //       border: const OutlineInputBorder(),
+          //       hintText: 'Confirm password',
+          //       icon: const Icon(Icons.remove_red_eye),
+          //       suffixIcon: InkWell(
+          //         child: const Icon(Icons.remove_red_eye),
+          //         onTap: () {
+          //           setState(() {
+          //             _hidePassword = false;
+          //           });
 
-                      Timer(
-                        const Duration(seconds: 5),
-                        () {
-                          setState(() {
-                            _hidePassword = true;
-                          });
-                        },
-                      );
-                    },
-                    ),
-                  ),
-                ),
-            ),
-      
+          //           Timer(
+          //             const Duration(seconds: 5),
+          //             () {
+          //               setState(() {
+          //                 _hidePassword = true;
+          //               });
+          //             },
+          //           );
+          //         },
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton (
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()){
-                        _formKey.currentState!.save();
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
 
-                        context.read<LoginProfileModel>()
+                      context.read<LoginProfileModel>()
                         ..name = _name
                         ..age = _age
                         ..password = _password;
 
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(
-                            builder: (context)=> LoginProfilePage(
-                              profile: LoginProfile(_name, _age, _password),
-                            ),
-                          ),
+                      try {
+                        final credential = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                          email: _name,
+                          password: _password,
                         );
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'weak-password') {
+                          print('The password provided is too weak.');
+                          setState(() {
+                            _message = 'The password provided is too weak.';
+                          });
+                        } else if (e.code == 'email-already-in-use') {
+                          print('The account already exists for that email.');
+                          setState(() {
+                            _message =
+                                'The account already exists for that email.';
+                          });
+                        }
+                        return;
+                      } catch (e) {
+                        print(e);
+                        return;
+                      }
+
+                      var user = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                              email: _name, password: _password);
+
+                      print(user);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginProfilePage(
+                            profile: LoginProfile(_name, _age, _password),
+                          ),
+                        ),
+                      );
                     }
                   },
-                  child: Text('Validate & Save'),
+                  child: Text('Add User'),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+
+                          context.read<LoginProfileModel>()
+                            ..name = _name
+                            ..age = _age
+                            ..password = _password;
+
+                          try {
+                            final credential = await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                                    email: _name, password: _password);
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'user-not-found') {
+                              print('No user found for that email.');
+                              setState(() {
+                                _message = 'No user found for that email.';
+                              });
+                            } else if (e.code == 'wrong-password') {
+                              print('Wrong password provided for that user.');
+                              setState(() {
+                                _message = 'Wrong password provided for that user.';
+                              });
+                            }
+                          }
+                        }
+                      },
+                      child: Text('Login')),
+                )
               ],
             ),
-          )
-
-       ],
+          ),
+        ],
       ),
     );
   }
@@ -226,11 +286,10 @@ class LoginProfile {
   final int age;
   final String password;
 
-  const LoginProfile(this.name,this.age,this.password);
-
+  const LoginProfile(this.name, this.age, this.password);
 }
 
-class LoginProfilePage extends StatelessWidget {   
+class LoginProfilePage extends StatelessWidget {
   final LoginProfile profile;
 
   const LoginProfilePage({key, required this.profile});
@@ -270,22 +329,21 @@ class LoginProfileModel extends ChangeNotifier {
   int _age = 0;
   String _password = '';
 
- get name => this._name;
- set name(value){
-  this._name = value;
-  notifyListeners();
- } 
+  get name => this._name;
+  set name(value) {
+    this._name = value;
+    notifyListeners();
+  }
 
- get age => this._age;
- set age(value) {
-   this._age = value;
-   notifyListeners();
- }
+  get age => this._age;
+  set age(value) {
+    this._age = value;
+    notifyListeners();
+  }
 
- get password => this._password;
- set password(value) {
-  this._password = value;
-  notifyListeners();
- } 
-
+  get password => this._password;
+  set password(value) {
+    this._password = value;
+    notifyListeners();
+  }
 }

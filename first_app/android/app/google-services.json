@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "604452351813",
+    "project_id": "is381-2022-montakarn",
+    "storage_bucket": "is381-2022-montakarn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604452351813:android:f771b9596d2b0dab0c982c",
+        "android_client_info": {
+          "package_name": "com.example.first_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604452351813-ls5608sb2cfk1uldsb6rcdo1dt72bhbl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMcBBgsjFx0iTtmc88KuO_x9-Wc7FkXDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604452351813-ls5608sb2cfk1uldsb6rcdo1dt72bhbl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "604452351813-skg060rn0qodh85qtb802q4f4s9l4e4u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firstApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
