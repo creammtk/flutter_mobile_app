@@ -1,4 +1,5 @@
 import 'package:final_app/credit_card_page.dart';
+import 'package:final_app/display_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
       length: 2, 
       child: Scaffold(
       appBar: AppBar(
-       // title: Text(widget.title),
+       title: Text('Home'),
       ),
       body: Padding(
         padding: EdgeInsets.all(8.0),

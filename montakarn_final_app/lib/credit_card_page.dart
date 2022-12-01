@@ -1,3 +1,5 @@
+import 'package:final_app/add_new_card.dart';
+import 'package:final_app/display_data.dart';
 import 'package:flutter/material.dart';
 
 class CreditCardPage extends StatelessWidget {
@@ -29,35 +31,17 @@ class CreditCardPage extends StatelessWidget {
               ),
               FloatingActionButton(
                 child: const Icon(Icons.add),
-                backgroundColor: Color.fromARGB(255, 224, 198, 113),
+                backgroundColor: Colors.blueGrey,
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Card()),
+                    MaterialPageRoute(builder: (context) => AddNewCardState()),
                   );
                 },
               ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _buildCreditCard(
-              color: Color(0xFF090943),
-              cardExpiration: '08/2022',
-              cardHolder: 'MONTAKARN NAPOHPOL',
-              cardNumber: '3456 7844 xxxx 6789',
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _buildCreditCard(
-              color: Color(0xFF090943),
-              cardExpiration: '08/2022',
-              cardHolder: 'MONTAKARN NAPOHPOL',
-              cardNumber: '3456 7844 xxxx 6789',
-            ),
-          ),
-           Padding(
             padding: const EdgeInsets.all(8.0),
             child: _buildCreditCard(
               color: Color(0xFF090943),
@@ -73,7 +57,7 @@ class CreditCardPage extends StatelessWidget {
 
   Widget _buildBalanceCard() {
     return Card(
-        color: Colors.transparent,
+        color: Color.fromARGB(0, 0, 0, 0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
         child: Container(
