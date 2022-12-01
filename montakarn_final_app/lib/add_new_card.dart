@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'main.dart';
+
 class AddNewCardState extends StatelessWidget {
 
   @override
@@ -195,13 +197,18 @@ class _MyFormState extends State<MyForm>  {
               onPressed:() async{
                 if(_formKey.currentState!.validate()) {
                    _formKey.currentState!.save();
-                   _cardCollection.add({
+                   await _cardCollection.add({
                     "card_number": myCard.card_number,
                     // "color": myCard.color.toString(),
                     "card_holder": myCard.card_holder,
                     "card_exp": myCard.card_exp,
-                    "cvv": myCard.cvv
+                    "cvv": myCard.cvv,
+                    "createDate": DateTime.now().toString(),
                    });
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                  );
                 }
               },
               child: Text('Save')

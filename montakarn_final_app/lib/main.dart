@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               child: TabBarView(
                 children: [
-                  CreditCardPage(),
+                  DisplayScreen(),
                   Center(child: Text('Activity'),)
                 ],
               )
