@@ -25,15 +25,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const MyHomePage(),
-      },
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const MyHomePage(),
+        },
+      );
   }
 }
 
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TabBarView(
                 children: [
                   DisplayScreen(),
-                  DisplayScreen(),
+                  Center(child: Text('Activity')),
                 ],
               )
             )

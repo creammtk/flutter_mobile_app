@@ -200,28 +200,3 @@ class _MyFormState extends State<MyForm>  {
     );
   }
 }
-
-
-// class FormAddCard extends ChangeNotifier {
-//   String _cardNumber = '';
-//   String _cardExp = '';
-//   String _cardCVV = '';
-//  get cardNumber => this._cardNumber;
-//  set cardNumber(value){
-//   this._cardNumber = value;
-//   notifyListeners();
-//  }
- 
-//  get cardExp => this._cardExp;
-//  set cardExp(value){
-//   this._cardExp = value;
-//   notifyListeners();
-//  } 
-
-//  get cardCVV => this._cardCVV;
-//  set cardCVV(value){
-//   this._cardCVV = value;
-//   notifyListeners();
-//  } 
-
-// }

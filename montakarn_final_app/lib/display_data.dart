@@ -78,6 +78,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                       color: Color(colorRand),
                       cardExpiration: document['card_exp'],
                       cardNumber: document['card_number'],
+                      cardCVV: document['cvv']
                       );
             }).toList()
           ],
@@ -92,8 +93,7 @@ Widget _buildBalanceCard() {
       color: Color.fromARGB(0, 0, 0, 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
       child: Container(
-        height: 200,
-        width: 400,
+        height: 230,
         padding: const EdgeInsets.all(30.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,13 +129,14 @@ Widget _buildBalanceCard() {
 Widget _buildCreditCard(BuildContext context,
     {required Color color,
     required String cardNumber,
-    required String cardExpiration}) {
+    required String cardExpiration,
+    required String cardCVV}) {
   return InkWell(
     onTap: () {
                 Navigator.push(
                 context,
                 MaterialPageRoute(
-                builder: (context) => TransactionFullPage(cardNumber: cardNumber, cardExpiration: cardExpiration, color: color )),
+                builder: (context) => TransactionFullPage(cardNumber: cardNumber, cardExpiration: cardExpiration, color: color, cardCVV: cardCVV )),
                 );
     },
     child: 
@@ -144,7 +145,7 @@ Widget _buildCreditCard(BuildContext context,
         color: color,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
         child: Container(
-          height: 200,
+          height: 230,
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 22.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
