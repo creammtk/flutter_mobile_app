@@ -1,7 +1,11 @@
+import 'package:final_app/add_new_card.dart';
 import 'package:final_app/credit_card_page.dart';
 import 'package:final_app/display_data.dart';
+import 'package:final_app/transaction.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 
 import 'firebase_options.dart';
 
@@ -10,7 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   runApp(const MyApp());
 }
 
@@ -75,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TabBarView(
                 children: [
                   DisplayScreen(),
-                  Center(child: Text('Activity'),)
+                  Transaction()
                 ],
               )
             )

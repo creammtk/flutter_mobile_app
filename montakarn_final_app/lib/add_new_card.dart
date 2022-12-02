@@ -3,6 +3,7 @@ import 'package:final_app/class_card.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'main.dart';
 
@@ -32,8 +33,12 @@ class MyForm extends StatefulWidget {
 class _MyFormState extends State<MyForm>  {
 
   final _formKey = GlobalKey<FormState>();
+  // late String _cardNumber;
+  // late String _cardExp;
+  // late String _cardCVV;
+
   mtk_card myCard = 
-    mtk_card(card_number: "", card_holder: "", card_exp: "", cvv: "");
+    mtk_card(card_number: "",card_exp: "", cvv: "");
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   CollectionReference _cardCollection = FirebaseFirestore.instance.collection("montakarn_cards");
@@ -53,8 +58,9 @@ class _MyFormState extends State<MyForm>  {
                 children: [
                   TextFormField(
                     // ignore: prefer_const_constructors
-                      inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
+                    // initialValue: context.read<FormAddCard>().cardNumber,
+                    inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
                     ],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -72,65 +78,20 @@ class _MyFormState extends State<MyForm>  {
                       ),
                       filled: true,
                     ),
-                    onSaved: (String? card_number){
-                      myCard.card_number = card_number!;
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter card number';
+                      }
+
+                      if (value.length < 16) {
+                        return 'Card number must be at least 16 charactors';
+                      }
+
+                      return null;
                     },
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              child: Column(
-                children: [
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          borderSide:
-                              BorderSide(width: 0, style: BorderStyle.solid)),
-                      hintText: "Card Color",
-                      prefixIcon: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Icon(Icons.color_lens),
-                        ),
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                      ),
-                      filled: true,
-                    ),
-                    // onSaved: (String? color){
-                    //   myCard.color = color!;
-                    // },
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              child: Column(
-                children: [
-                  TextFormField(
-                    // ignore: prefer_const_constructors
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          borderSide:
-                              BorderSide(width: 0, style: BorderStyle.solid)),
-                      hintText: "Card Holder",
-                      prefixIcon: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Icon(Icons.people),
-                        ),
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                      ),
-                      filled: true,
-                    ),
-                    onSaved: (String? card_holder){
-                      myCard.card_holder = card_holder!;
+                    onSaved: (String? card_number){
+                      // _cardNumber = card_number!;
+                      myCard.card_number = card_number!;
                     },
                   ),
                 ],
@@ -142,6 +103,7 @@ class _MyFormState extends State<MyForm>  {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      // initialValue: context.read<FormAddCard>().cardExp,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
@@ -158,14 +120,27 @@ class _MyFormState extends State<MyForm>  {
                         ),
                         filled: true,
                       ),
+                      validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter card expired';
+                      }
+
+                      if (value.length < 4) {
+                        return 'Year must be 20xx';
+                      }
+
+                      return null;
+                    },
                       onSaved: (String? card_exp){
-                      myCard.card_exp = card_exp!;
+                        // _cardExp = card_exp!;
+                        myCard.card_exp = card_exp!;
                     },
                     ),
                   ),
                   const SizedBox(width: 40),
                   Expanded(
                     child: TextFormField(
+                      // initialValue: context.read<FormAddCard>().cardCVV,
                       inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
                     ],
@@ -185,8 +160,20 @@ class _MyFormState extends State<MyForm>  {
                         ),
                         filled: true,
                       ),
+                      validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter CVV';
+                      }
+
+                      if (value.length < 2) {
+                        return 'CVV must be at least 3 charactors';
+                      }
+
+                      return null;
+                    },
                       onSaved: (String? cvv){
-                      myCard.cvv = cvv!;
+                        // _cardCVV = cvv!;
+                        myCard.cvv = cvv!;
                     },
                     ),
                   ),
@@ -199,8 +186,6 @@ class _MyFormState extends State<MyForm>  {
                    _formKey.currentState!.save();
                    await _cardCollection.add({
                     "card_number": myCard.card_number,
-                    // "color": myCard.color.toString(),
-                    "card_holder": myCard.card_holder,
                     "card_exp": myCard.card_exp,
                     "cvv": myCard.cvv,
                     "createDate": DateTime.now().toString(),
@@ -219,3 +204,27 @@ class _MyFormState extends State<MyForm>  {
     );
   }
 }
+
+// class FormAddCard extends ChangeNotifier {
+//   String _cardNumber = '';
+//   String _cardExp = '';
+//   String _cardCVV = '';
+//  get cardNumber => this._cardNumber;
+//  set cardNumber(value){
+//   this._cardNumber = value;
+//   notifyListeners();
+//  }
+ 
+//  get cardExp => this._cardExp;
+//  set cardExp(value){
+//   this._cardExp = value;
+//   notifyListeners();
+//  } 
+
+//  get cardCVV => this._cardCVV;
+//  set cardCVV(value){
+//   this._cardCVV = value;
+//   notifyListeners();
+//  } 
+
+// }

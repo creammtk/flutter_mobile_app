@@ -116,13 +116,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  document["card_holder"],
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
                                   'VALID THRU',
                                   style: TextStyle(
                                       color: Colors.grey,
