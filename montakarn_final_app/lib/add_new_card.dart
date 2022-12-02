@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_app/class_card.dart';
+import 'package:final_app/inputformat.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,6 +62,8 @@ class _MyFormState extends State<MyForm>  {
                     // initialValue: context.read<FormAddCard>().cardNumber,
                     inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(16),
+                    CardNumberInputFormatter(),
                     ],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -83,10 +86,6 @@ class _MyFormState extends State<MyForm>  {
                         return 'Please enter card number';
                       }
 
-                      if (value.length < 16) {
-                        return 'Card number must be at least 16 charactors';
-                      }
-
                       return null;
                     },
                     onSaved: (String? card_number){
@@ -103,8 +102,12 @@ class _MyFormState extends State<MyForm>  {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      // initialValue: context.read<FormAddCard>().cardExp,
                       keyboardType: TextInputType.datetime,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(4),
+                        CardMonthInputFormatter(),
+                      ],
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -125,10 +128,6 @@ class _MyFormState extends State<MyForm>  {
                         return 'Please enter card expired';
                       }
 
-                      if (value.length < 4) {
-                        return 'Year must be 20xx';
-                      }
-
                       return null;
                     },
                       onSaved: (String? card_exp){
@@ -141,8 +140,9 @@ class _MyFormState extends State<MyForm>  {
                   Expanded(
                     child: TextFormField(
                       // initialValue: context.read<FormAddCard>().cardCVV,
-                      inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(3)
                     ],
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
@@ -163,10 +163,6 @@ class _MyFormState extends State<MyForm>  {
                       validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter CVV';
-                      }
-
-                      if (value.length < 2) {
-                        return 'CVV must be at least 3 charactors';
                       }
 
                       return null;
@@ -204,6 +200,7 @@ class _MyFormState extends State<MyForm>  {
     );
   }
 }
+
 
 // class FormAddCard extends ChangeNotifier {
 //   String _cardNumber = '';

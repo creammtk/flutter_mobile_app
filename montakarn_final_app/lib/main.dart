@@ -29,7 +29,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: MyHomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(),
+      },
     );
   }
 }
@@ -79,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TabBarView(
                 children: [
                   DisplayScreen(),
-                  Transaction()
+                  DisplayScreen(),
                 ],
               )
             )

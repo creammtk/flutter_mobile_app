@@ -5,22 +5,75 @@ import 'package:final_app/add_new_card.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-class Transaction extends StatefulWidget {
+
+class TransactionFullPage extends StatelessWidget {
+
+  const TransactionFullPage({super.key, required this.cardNumber, required this.cardExpiration, required this.color});
+
+  final String cardNumber;
+  final String cardExpiration;
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        
+      ),
+      body: TransactionList(cardNumber: cardNumber, cardExpiration: cardExpiration, color: color),
+    );
+  }
+}
+class TransactionList extends StatefulWidget {
+  
+
+  const TransactionList({super.key, required this.cardNumber, required this.cardExpiration, required this.color});
+
+  final String cardNumber;
+  final String cardExpiration;
+  final Color color;
+
   @override
   _TransactionState createState() => _TransactionState();
 }
 
-class _TransactionState extends State<Transaction> {
+class _TransactionState extends State<TransactionList> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("montakarn_transactions")
+            .where('cardNumber', isEqualTo: widget.cardNumber)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),);
+          }
+          if (snapshot.data!.docs.toList().isEmpty)
+          {
+            return 
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _buildCreditCard(
+                      color: widget.color,
+                      cardExpiration: widget.cardExpiration,
+                      cardNumber: widget.cardNumber,
+                    ),
+                  ),
+                  Center(
+              child: Text(
+                'No transaction.'
+              )
+                  )
+                ],
+              );
           }
           return ListView(
             children: [
@@ -30,14 +83,19 @@ class _TransactionState extends State<Transaction> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: _buildCreditCard(
-                      color: Color(0xFF090943),
-                      cardExpiration: '',
-                      cardHolder: 'MONTAKARN NAPOHPOL',
-                      cardNumber: '3456 7844 xxxx 6789',
+                      color: widget.color,
+                      cardExpiration: widget.cardExpiration,
+                      cardNumber: widget.cardNumber,
                     ),
                   ),
                   
                 ],
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Recent Transactions',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
               ),
               ...snapshot.data!.docs.map((e) {
                     return _buildTransactionCard(
@@ -134,7 +192,6 @@ class _TransactionState extends State<Transaction> {
   Widget _buildCreditCard(
       {required Color color,
       required String cardNumber,
-      required String cardHolder,
       required String cardExpiration}) {
     return Card(
       elevation: 4.0,
@@ -151,17 +208,17 @@ class _TransactionState extends State<Transaction> {
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Text(
-                '$cardNumber',
+                cardNumber,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 21,
+                    fontSize: 18,
                     fontFamily: 'CourrierPrime'),
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                _buildingDetailBlock(label: 'CARDHOLDER', value: cardHolder),
                 _buildingDetailBlock(
                     label: 'VALID THRU', value: cardExpiration),
               ],
@@ -200,22 +257,44 @@ class _TransactionState extends State<Transaction> {
     );
   }
 
-  class TransactionModel extends ChangeNotifier {
-  String _cardType = '';
-  int _Amount = 0;
- get cardType => this._cardType;
- set cardType(value){
-  this._cardType = value;
-  notifyListeners();
- }
- 
- get Amount => this._Amount;
- set Amount(value){
-  this._Amount = value;
-  notifyListeners();
- }
-
+Widget _buildTitleSection({required title, required subtitle}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(left: 8.0, top: 6.0),
+        child: Text(
+          '$title',
+          style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 8.0, bottom: 16.0),
+        child: Text(
+          '$subtitle',
+          style: TextStyle(fontSize: 21.0, color: Colors.black45),
+        ),
+      )
+    ],
+  );
 }
+
+//   class TransactionModel extends ChangeNotifier {
+//   String _cardType = '';
+//   int _Amount = 0;
+//  get cardType => this._cardType;
+//  set cardType(value){
+//   this._cardType = value;
+//   notifyListeners();
+//  }
+ 
+//  get Amount => this._Amount;
+//  set Amount(value){
+//   this._Amount = value;
+//   notifyListeners();
+//  }
+
+// }
 
 
 
