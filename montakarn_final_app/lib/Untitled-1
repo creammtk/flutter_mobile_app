@@ -1,5 +1,0 @@
-{
-    'shopping': Color.fromARGB(255, 101, 205, 94),
-    'netflix': Color.fromARGB(255, 206, 94, 94),
-    'salary': Color.fromARGB(255, 88, 199, 198),
-}

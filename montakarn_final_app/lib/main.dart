@@ -1,5 +1,4 @@
 import 'package:final_app/add_new_card.dart';
-import 'package:final_app/credit_card_page.dart';
 import 'package:final_app/display_data.dart';
 import 'package:final_app/transaction.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,6 +7,7 @@ import 'package:provider/provider.dart';
 
 
 import 'firebase_options.dart';
+import 'models/CardDetails.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,16 +24,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const MyHomePage(),
-        },
-      );
+    return 
+        MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blueGrey,
+            ),
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const MyHomePage(),
+            },
+          );
   }
 }
 
